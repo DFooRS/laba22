@@ -22,6 +22,7 @@ def dir_tree(path, prefix = ''):
                 add_pref = space
             dir_tree(item, prefix + add_pref)
 
+
 def main(command_line=None):
     """
     Главная функция программы.
