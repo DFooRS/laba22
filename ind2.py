@@ -7,17 +7,20 @@ from pathlib import Path
 import sys
 
 
-def dir_tree(path, prefix=' '):
+def dir_tree(path, prefix = ''):
     """
     Функция вывода дерева каталогов.
     """
-    print(f'{prefix}├── {Path(path).name}')
-    for item in Path(path).iterdir():
+    items = list(path.iterdir())
+    pointers = [tee] * (len(items) - 1) + [last]
+    for i, item in enumerate(items):
+        print(prefix + pointers[i] + item.name)
         if item.is_dir():
-            dir_tree(item, prefix + '│  ')
-        else:
-            print(f'{prefix}│  ├──{item.name}')
-
+            if pointers[i] == tee:
+                add_pref = branch
+            else:
+                add_pref = space
+            dir_tree(item, prefix + add_pref)
 
 def main(command_line=None):
     """
@@ -51,4 +54,8 @@ def main(command_line=None):
 
 
 if __name__ == '__main__':
+    space = '    '
+    branch = '│   '
+    tee = '├── '
+    last = '└── '
     main()
