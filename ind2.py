@@ -14,7 +14,32 @@ def dir_tree(path, prefix = ''):
     items = list(path.iterdir())
     pointers = [tee] * (len(items) - 1) + [last]
     for i, item in enumerate(items):
-        print(prefix + pointers[i] + item.name)
+        if item.is_dir():
+            print(prefix + pointers[i] + folder + item.name)
+        else:
+            match item.suffix:
+                case ".py":
+                    file = "🐍"
+                case item.suffix if item.suffix in text_files:
+                    file = "📄"
+                case item.suffix if item.suffix in video_files:
+                    file = "🎥"
+                case item.suffix if item.suffix in picture_files:
+                    file = "📷"
+                case ".exe":
+                    file = "💻"
+                case item.suffix if item.suffix in sharp_files:
+                    file = "#"
+                case item.suffix if item.suffix in razmetka:
+                    file = "📐"
+                case ".lnk":
+                    file = "🔻"
+                case ".img":
+                    file = "💿"
+                case _:
+                    file = "❔"
+            print(prefix + pointers[i] + file + item.name)
+
         if item.is_dir():
             if pointers[i] == tee:
                 add_pref = branch
@@ -59,4 +84,10 @@ if __name__ == '__main__':
     branch = '│   '
     tee = '├── '
     last = '└── '
+    folder = "📁"
+    text_files = [".doc", ".docx", ".txt", "pdf", ".xlsx"]
+    video_files = [".mp4", ".mov", ".mpeg-4", ".avi", ".mkv"]
+    picture_files = [".jpeg", ".png", ".gif", ".svg", ".ico", ".jpg"]
+    sharp_files = [".cs", ".sln"]
+    razmetka = [".xaml", ".html"]
     main()
