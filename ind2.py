@@ -14,38 +14,45 @@ def dir_tree(path, prefix = ''):
     items = list(path.iterdir())
     pointers = [tee] * (len(items) - 1) + [last]
     for i, item in enumerate(items):
-        if item.is_dir():
-            print(prefix + pointers[i] + folder + item.name)
-        else:
-            match item.suffix:
-                case ".py":
-                    file = "🐍"
-                case item.suffix if item.suffix in text_files:
-                    file = "📄"
-                case item.suffix if item.suffix in video_files:
-                    file = "🎥"
-                case item.suffix if item.suffix in picture_files:
-                    file = "📷"
-                case ".exe":
-                    file = "💻"
-                case item.suffix if item.suffix in sharp_files:
-                    file = "#"
-                case item.suffix if item.suffix in razmetka:
-                    file = "📐"
-                case ".lnk":
-                    file = "🔻"
-                case ".img":
-                    file = "💿"
-                case _:
-                    file = "❔"
+        if item.is_file():
+            file = set_icon(item)
             print(prefix + pointers[i] + file + item.name)
-
-        if item.is_dir():
+        else:
+            print(prefix + pointers[i] + folder + item.name)
             if pointers[i] == tee:
                 add_pref = branch
             else:
                 add_pref = space
             dir_tree(item, prefix + add_pref)
+
+
+def set_icon(item):
+    """
+    Функция выбора иконки.
+    """
+    match item.suffix:
+        case ".py":
+            icon = "🐍"
+        case item.suffix if item.suffix in text_files:
+            icon = "📄"
+        case item.suffix if item.suffix in video_files:
+            icon = "🎥"
+        case item.suffix if item.suffix in picture_files:
+            icon = "📷"
+        case ".exe":
+            icon = "💻"
+        case item.suffix if item.suffix in sharp_files:
+            icon = "#"
+        case item.suffix if item.suffix in razmetka:
+            icon = "📐"
+        case ".lnk":
+            icon = "🔻"
+        case ".img":
+            icon = "💿"
+        case _:
+            icon = "❔"
+
+    return icon
 
 
 def main(command_line=None):
